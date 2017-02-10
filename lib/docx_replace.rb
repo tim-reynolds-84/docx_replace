@@ -11,6 +11,7 @@ module DocxReplace
     def initialize(path, files, temp_dir=nil)
       @zip_file = Zip::File.new(path)
       @temp_dir = temp_dir
+      @document_content = {}
       files.each do |file|
         read_docx_file(file)
       end
@@ -42,10 +43,9 @@ module DocxReplace
     def commit(new_path=nil)
       write_back_to_file(new_path)
     end
-
+  
     private
-    #DOCUMENT_FILE_PATH = 'word/document.xml'    
-    @document_content = {}
+
     def read_docx_file(file)
       @document_content[file] = @zip_file.read(file)
     end
@@ -66,9 +66,8 @@ module DocxReplace
         
         @document_content.each do |key, doc|
           zos.put_next_entry(key)
-          zos.print val
-        end
-        
+          zos.print doc
+        end        
       end
 
       if new_path.nil?
