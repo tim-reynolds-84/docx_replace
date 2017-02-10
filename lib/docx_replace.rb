@@ -61,7 +61,7 @@ module DocxReplace
           unless @document_content.key?(e.name)
             zos.put_next_entry(e.name)
             zos.print e.get_input_stream.read
-          ends
+          end
         end
         
         @document_content.each do |key, doc|
